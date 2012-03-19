@@ -1,0 +1,83 @@
+ROOT			LOCAL_DECL | CLASS_DECL | STMT_LIST
+
+ROOT_			ROOT | e
+
+CLASS_DECL 		CLASS T_ID EXTENDS { LOCAL_DECL }
+
+EXTENDS			T_EXTENDS id | e
+
+LOCAL_DECL		TYPE_OR_ID ID_LIST; LOCAL_DECL | e
+
+ID_LIST 		ID ASSIGN ID_LIST_
+
+ID_LIST_		, ID_LIST | e 
+
+ASSIGN			= VALUE | e
+
+VALUE 			PARAMS -> STMT_LIST | EXPR
+
+PARAMS 			(PARAMS_) | e
+
+PARAMS_			TYPE T_ID PARAMS__ | e
+
+PARAMS__		, TYPE id | e
+
+STMT_LIST		STMT STMT_LIST | e
+
+STMT 			if (? EXPR )? THEN ELSE |
+				while (? EXPR )? STMT_LIST |
+				for (? EXPR in EXPR )? \n? STMT |
+				return EXPR | 
+				this Y |
+				LOCAL_DECL |
+				id X |
+				{ STMT_LIST } |
+
+			X -> [EXPR] EXPR_ | Y
+			Y -> STRUCT ASSIGN
+				
+
+THEN 			then STMT | \n STMT_LIST
+
+ELSE			else \n? 
+
+PRIMARY			(EXPR) | id STRUCT PARENT | LITERAL | NUMBER | TRUE | FALSE | THIS | NULL
+
+STRUCT 			[EXPR] | .PRIMARY | PRIMARY  | e
+
+PARENT			() | e
+
+EXPR 			P2 | new EXPR_NEW
+
+EXPR_NEW		id STRUCT PARENT
+
+P2				P3 P2_
+
+P3				P4 P3_
+
+P4				P5 P4_
+
+P5				P6 P5_
+
+P6				P7 P6_
+
+P7				P8	P7_
+
+P8				P9 P8_
+
+P9				( + | - | ! | e) PRIMARY
+
+P2_				&& P3 P2_ | e
+
+P3_				|| P4 P3_ | e
+
+P4_				(== | != | === | !==) P5 P4_ | e
+
+P5_				(< | <= | > | >=) P6 P5_ | e
+
+P6_				(+ | - | \|) P7 P6_ | e
+
+P7_				(* | / | % | & | DIV)
+
+P8_				(** | SQRT) P9 P8_
+
